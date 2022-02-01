@@ -29,7 +29,7 @@ Existing user?  <Link rel="stylesheet" href="/login">Login here instead</Link>
  </>
 ) : (
 <>
-<Message attached="bottom" info>
+<Message attached="top" info>
     <Icon name="lock"/>
     <Link href='/reset'>Forget Password?</Link>
 </Message>
