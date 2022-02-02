@@ -17,7 +17,7 @@ const Navbar = () => {
         </Menu.Item>
       </Link>
       <Link href="./signup">
-        <Menu.Item active={isActive('./signup')}>
+        <Menu.Item active={isActive('/signup')}>
           <Icon size="large" name="signup"/>
             Signup
           

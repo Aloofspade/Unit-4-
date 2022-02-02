@@ -1,4 +1,4 @@
-import { Form, Header, Icon, Segment } from "semantic-ui-react";
+import { Form, Header, Icon, Segment, Image } from "semantic-ui-react";
 
 
 const ImageDropDiv = ({handleChange, inputRef, setHightlighed, highlighted, setMedia, setMediaPreview, media, mediaPreview}) => {
@@ -21,13 +21,24 @@ const ImageDropDiv = ({handleChange, inputRef, setHightlighed, highlighted, setM
             onDrop={(e) => {
                 e.preventDefault()
                 setHightlighed(true)
-                console.log(e.dataTransfer.files);
+                // console.log(e.dataTransfer.files);
+
+                const droppedFile = e.dataTransfer.files[0];
+                setMediaPreview(URL.createObjectURL(droppedFile))
+                setMedia(droppedFile);
             }}>
+
+            {mediaPreview === null ? (
+
+
                 <Segment basic placeholder
                 style={{curser:"pointer"}}
                 onClick={() => {
                     inputRef.current.click();
                 }}
+
+                style={{ cursor: "pointer"}}
+                {...(highlighted && {color: "green"})}
                 >
                     <Header icon>
                         <Icon name="file image outline"  />
@@ -35,8 +46,19 @@ const ImageDropDiv = ({handleChange, inputRef, setHightlighed, highlighted, setM
                         Drag n Drop or Click to upload
                     </Header>
                 </Segment>
+               ) : (
+                <Segment placeholder basic color="green">
+                    <Image 
+                    src={mediaPreview}
+                    size="large"
+                    centered
+                    style={{ cursor: "pointer"}}
+                    />
+                </Segment>
+                )} 
             </div>
         </Segment>
+        
     </Form.Field>
   </>;
 };
