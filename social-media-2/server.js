@@ -25,6 +25,10 @@ const nextApp = next({dev})
 const handler = nextApp.getRequestHandler();
 
 
+//* Routes 
+const signupRoute = require('./pages/api/v1/signup')
+
+
 //* Express Middlewares 
 const {connectDB} = require("./DB/connect")
 
@@ -35,7 +39,16 @@ app.use(express.json())
 
 connectDB();
 
+
+
 nextApp.prepare().then(() => {
+
+
+    //* Routing
+    app.use("/api/v1/signup/:username", signupRoute)
+
+
+
     app.all('*', (req,res) => handler(req, res));
     app.listen(PORT, (err) => {
         if (err) console.log(err);

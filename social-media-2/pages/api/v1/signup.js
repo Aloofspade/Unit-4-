@@ -9,12 +9,14 @@ const isEmail = require('validator/lib/isEmail')
 const regexUsername = require('../../../utils/valUsername');
 
 
-export default handler = async (req, res) => {
+const signupRoute = async (req, res) => {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //*GET ROUTE*//
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    if(req.method === "GET"){
+    if(req.method === "GET" && req.params){
+
+        console.log(req.params);
         const {username} = req.params;
 
         try{ 
@@ -22,7 +24,7 @@ export default handler = async (req, res) => {
 
             if(!regexUsername.text(username)) return res.status(401).send("Invalid")
             const user = await UserModel.findOne({
-                username: username.tolowercase()
+                username: username.toLowerCase()
             })
 
             if(user) return res.status(401).send("Username already taken")
@@ -49,7 +51,7 @@ export default handler = async (req, res) => {
            instagram,
            twitter
        } = req.body.user;
-   }
+   
 
    if(!isEmail(email)) return res.status(401).send("Invalid")
    if(password.length < 6) {
@@ -58,13 +60,13 @@ export default handler = async (req, res) => {
    }
    try{
        let user;
-       user = await UserModel.findOne({email: email.tolowercase()})
+       user = await UserModel.findOne({email: email.toLowerCase()})
        if(user) return res.status(401).send("Email already used")
 
        user = new UserModel({
            name,
-           email:email.tolowercase(),
-           username: username.tolowercase(),
+           email:email.toLowerCase(),
+           username: username.toLowerCase(),
            password,
            profilePicURL: req.body.profilePicURL || defaultProfilePic,
        })
@@ -78,17 +80,17 @@ export default handler = async (req, res) => {
             profileFields.social = {};
            if(facebook) profileFields.social.facebook = facebook;
            if(twitter) profileFields.social.twitter = twitter;
-           if(instagram) profileFields.social.instagram = instagram
-           if(youtube) profileFields.social.youtube = youtube
+           if(instagram) profileFields.social.instagram = instagram;
+           if(youtube) profileFields.social.youtube = youtube;
 
 
-           await new ProfileModel(profileFields).save()
+           await new ProfileModel(profileFields).save();
            await new FollowerModel({
                user: user._id,
                followers: [],
                following: [],
 
-           });
+           }).save();
 
        const payload = {userID: user._id};
 
@@ -99,9 +101,9 @@ export default handler = async (req, res) => {
            {expiresIn: "2d"},
            (err, token) => {
             if(err) throw err;
-            res.status(200).json(token)
+            res.status(200).json(token);
            }
-       )
+       );
    } catch (err) {
     console.log(err);
 
@@ -109,15 +111,20 @@ export default handler = async (req, res) => {
     
    }
 
+   
+
 
 
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //*ERROR ROUTE*//
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+   }
 
     else {
-        res.status(500).send("Method Not Supported")
+        res.status(500).send("Method Not Supported");
     }
 };
+
+
+module.exports = signupRoute;

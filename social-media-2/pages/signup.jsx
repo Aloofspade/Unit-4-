@@ -2,9 +2,10 @@ import React from "react";
 import { FooterMessage, HeaderMessage } from "../components/common/WelcomeMessage";
 import { useState ,  useEffect, useRef} from "react";
 import { Divider, Form, FormInput, Segment, TextArea, Button} from "semantic-ui-react";
-import { regexUserName } from "../utils/valUsername";
+import  regexUserName  from "../utils/valUsername";
 import CommonSocials from "../components/common/CommonSocials";
 import ImageDropDiv from "../components/common/ImageDropDiv";
+import axios from "axios";
 
 
 const signup = () => {
@@ -46,7 +47,31 @@ useEffect (() => {
 setSubmitDisabled((!name && password && email && username))
 }, [user, username])
 
+useEffect(() => {
+    username === "" ? setUsernameAvail(false) : handleUsernameAvail
+}, [username])
+
+
+
     //*Form Handlers */
+
+const handleUsernameAvail = async () => {
+    setUsernameLoading(true)
+
+    try{
+        const res = await axios.get(`/api/v1/signup/${username}`)
+        if(res.data === 'Available'){
+            setUsernameAvail(true);
+            setUser((prev) => ({...prev, [name] : value }))
+        }
+    } catch (err){
+        setErrorMsg("Username is not Available")
+
+    }
+
+    setUsernameLoading(false)
+}
+
     const handleChange = (e) => {
         const {name, value} = e.target;
         setUser((prev) => ({...prev, [name]: value}))
