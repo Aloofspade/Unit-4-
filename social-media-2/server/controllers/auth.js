@@ -1,12 +1,12 @@
 const { default: isEmail } = require("validator/lib/isEmail");
-const UserModel = require("../../../models/UserModel");
+const UserModel = require("../models/UserModel");
 
 const jwt = require('jsonwebtoken')
 
-const authRoute = (req, res) => {
-    //*POST ROUTE 
+const postUserLogin = async (req, res) => {
+    
 
-    if(req.method === "POST") {
+   {
         const {email, password} = req.body.user 
         if(!isEmail(email)) return res.status(401).send("Invalid Email");
         if(password.length < 6) return res.status(401).send("Must be at least 6 chars long");
@@ -38,7 +38,7 @@ const authRoute = (req, res) => {
     }
 
 
-    else {
-        res.status(500).send('Method not supported on routes')
-    }
+   
 }
+
+module.exports = {postUserLogin}

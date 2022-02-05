@@ -9,6 +9,11 @@ const ImageDropDiv = ({handleChange, inputRef, setHightlighed, highlighted, setM
             name="media" style={{display: "none"}} ref={inputRef}
             />
             <div 
+
+             onClick={() => {
+                    inputRef.current.click();
+                }}
+                style={{cursor: "pointer"}}
             onDragOver={(e) => {
                 e.preventDefault()
                 setHightlighed(true)
@@ -33,9 +38,7 @@ const ImageDropDiv = ({handleChange, inputRef, setHightlighed, highlighted, setM
 
                 <Segment basic placeholder
                 style={{curser:"pointer"}}
-                onClick={() => {
-                    inputRef.current.click();
-                }}
+               
 
                 style={{ cursor: "pointer"}}
                 {...(highlighted && {color: "green"})}
@@ -53,6 +56,7 @@ const ImageDropDiv = ({handleChange, inputRef, setHightlighed, highlighted, setM
                     size="large"
                     centered
                     style={{ cursor: "pointer"}}
+                    
                     />
                 </Segment>
                 )} 

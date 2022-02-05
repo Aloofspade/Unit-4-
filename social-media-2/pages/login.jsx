@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { FooterMessage, HeaderMessage } from "../components/common/WelcomeMessage";
+import { FooterMessage, HeaderMessage } from "./components/common/WelcomeMessage";
 
 import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
 

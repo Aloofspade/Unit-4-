@@ -1,11 +1,13 @@
 import React from "react";
-import { FooterMessage, HeaderMessage } from "../components/common/WelcomeMessage";
+import { FooterMessage, HeaderMessage } from "./components/common/WelcomeMessage";
 import { useState ,  useEffect, useRef} from "react";
-import { Divider, Form, FormInput, Segment, TextArea, Button} from "semantic-ui-react";
-import  regexUserName  from "../utils/valUsername";
-import CommonSocials from "../components/common/CommonSocials";
-import ImageDropDiv from "../components/common/ImageDropDiv";
+import { Divider, Form, FormInput, Segment, TextArea, Button, Message} from "semantic-ui-react";
+import CommonSocials from "./components/common/CommonSocials";
+import ImageDropDiv from "./components/common/ImageDropDiv";
 import axios from "axios";
+import { setToken } from "./util/authUser";
+import catchErrors from './util/catchError'
+let cancel;
 
 
 const signup = () => {
@@ -56,15 +58,24 @@ useEffect(() => {
     //*Form Handlers */
 
 const handleUsernameAvail = async () => {
+// const cancelToken = axios.CancelToken;
+
     setUsernameLoading(true)
 
     try{
-        const res = await axios.get(`/api/v1/signup/${username}`)
+        cancel && cancel()
+        const res = await axios.get(`/api/v1/user/${username}`, {
+            cancelToken: new axios.CancelToken((canceler) => {
+                cancel = canceler
+            })
+        })
         if(res.data === 'Available'){
             setUsernameAvail(true);
-            setUser((prev) => ({...prev, [name] : value }))
+            setErrorMsg(null);
+            setUser((prev) => ({...prev, username}))
         }
     } catch (err){
+        setUsernameAvail(false)
         setErrorMsg("Username is not Available")
 
     }
@@ -73,13 +84,56 @@ const handleUsernameAvail = async () => {
 }
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
+        const {name, value, files} = e.target;
+
+        if(name === 'media' && files.length) {
+            setMedia(() => files[0])
+            setMediaPreview(() => URL.createObjectURL(files[0]))
+        } else {
         setUser((prev) => ({...prev, [name]: value}))
+        }
     }
 
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        setFormLoading(true)
+        let profilePicURL;
+
+        if(media !== null) {
+            const formData = new FormData();
+            formData.append("image", media, {
+                Headers:{
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+
+            const res   = await axios.post('/api/v1/uploads', formData);
+            profilePicURL = res.data.src;
+        }
+
+        if(media !== null && !profilePicURL) {
+            setFormLoading(false)
+            return setErrorMsg("Error uploading image")
+        }
+
+        try {
+            const res = await axios.post('/api/v1/user', {
+
+                user, 
+                profilePicURL,
+
+            });
+            setToken(res.data)
+        } catch (error) {
+            const errorMsg = catchErrors(error)
+            setErrorMsg(errorMsg)
+        }
+
+
+
+        setFormLoading(false)
     }
 
 
@@ -87,8 +141,11 @@ const handleUsernameAvail = async () => {
     <> 
     <HeaderMessage/>
     <Form
-    Loading={formLoading} error={errorMsg !== null} onSubmit={handleSubmit}
+    Loading={formLoading}
+     error={errorMsg !== null} 
+     onSubmit={handleSubmit}
     > 
+   
         <Segment>
             <ImageDropDiv 
             handleChange={handleChange} inputRef={inputRef}
@@ -97,6 +154,13 @@ const handleUsernameAvail = async () => {
             setMedia={setMedia} media={media}
 
             />
+
+    <Message 
+    error 
+    content ={errorMsg}
+    header="Oops"
+    icon='meh'
+    />
             <Form.Input 
             label="Name"
             required
@@ -144,12 +208,7 @@ const handleUsernameAvail = async () => {
             value={username}
             onChange={(e) => {
                 setUsername(e.target.value);
-                const test = regexUserName.test(e.target.value);
-                if( test || regexUserName.test(e.target.value)){
-                    setUsernameAvail(true)
-                } else {
-                    setUsernameAvail(false);
-                }
+
             }}
             icon={usernameAvail ? "check" : "close"}
             iconPosition="left"
