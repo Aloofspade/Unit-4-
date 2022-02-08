@@ -2,6 +2,9 @@ import React, {useState, useEffect} from "react";
 import { FooterMessage, HeaderMessage } from "./components/common/WelcomeMessage";
 
 import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
+import catchErrors from "./util/catchError";
+import { setToken } from "./util/authUser";
+import axios from "axios"
 
 const login = () => {
 
@@ -29,9 +32,18 @@ const handleChange = (e) => {
     setUser((prev) => ({...prev, [name]: value}));
 }
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg("Something went wrong ")
+    setFormLoading(true)
+    try {
+        const res = await axios.post("/api/v1/user/login", {user});
+        setToken(res.data);
+
+    } catch (error) {
+     const errorMsg = catchErrors(error)
+     setErrorMsg(errorMsg)   
+    }
+    setFormLoading(false)
 }
 
 

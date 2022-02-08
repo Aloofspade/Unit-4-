@@ -12,7 +12,7 @@ req.files.image.tempFilePath,
 }
 )
 
-fs.unlinkSync(req.file.image.tempFilePath);
+fs.unlinkSync(req.files.image.tempFilePath);
 return res.status(200).json({src: src.secure_url})
 } catch (error) {
     console.log(error);

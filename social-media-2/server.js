@@ -27,6 +27,9 @@ const nextApp = next({dev})
 //! import req handlers for the server
 const handler = nextApp.getRequestHandler();
 
+//* Express Middlewares 
+app.use(express.json())
+app.use(fileUpload({useTempFiles : true}))
 
 //* Routes 
 const userRoutes = require('./server/routes/userRoutes')
@@ -35,18 +38,11 @@ const uploadRoutes = require('./server/routes/uploadPicRoutes')
 
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/auth', authRoutes)
-app.use('/api/v1/upload', uploadRoutes)
+app.use('/api/v1/uploads', uploadRoutes)
 
 
 
 
-
-//* Express Middlewares 
-
-
-
-app.use(express.json())
-app.use(fileUpload({useTempFiles : true}))
 
 //* App Startup //
 

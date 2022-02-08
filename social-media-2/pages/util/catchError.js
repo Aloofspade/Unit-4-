@@ -4,11 +4,10 @@ let errorMsg;
 if(error.response) {
     errorMsg = error.response.data
     console.log(errorMsg);
-}
-if(error.request) {
+}if(error.request) {
     errorMsg = error.request.data
     console.log(errorMsg);
-} else {
+} else  {
     errorMsg = error.message;
     console.log(errorMsg);
 }

@@ -50,7 +50,7 @@ setSubmitDisabled((!name && password && email && username))
 }, [user, username])
 
 useEffect(() => {
-    username === "" ? setUsernameAvail(false) : handleUsernameAvail
+    username === "" ? setUsernameAvail(false) : handleUsernameAvail()
 }, [username])
 
 
@@ -119,7 +119,7 @@ const handleUsernameAvail = async () => {
         }
 
         try {
-            const res = await axios.post('/api/v1/user', {
+            const res = await axios.post('/api/v1/user/signup', {
 
                 user, 
                 profilePicURL,
@@ -141,7 +141,7 @@ const handleUsernameAvail = async () => {
     <> 
     <HeaderMessage/>
     <Form
-    Loading={formLoading}
+    loading={formLoading}
      error={errorMsg !== null} 
      onSubmit={handleSubmit}
     > 
