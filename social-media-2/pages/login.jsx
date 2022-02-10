@@ -5,6 +5,7 @@ import { Button, Divider, Form, Message, Segment } from "semantic-ui-react";
 import catchErrors from "./util/catchError";
 import { setToken } from "./util/authUser";
 import axios from "axios"
+import Cookies from "js-cookie";
 
 const login = () => {
 
@@ -52,6 +53,13 @@ const handleSubmit = async (e) => {
 useEffect(() => {
     setSubmitDisabled(!email && password);
 }, [user]);
+
+
+useEffect(() => {
+    document.title = 'Welcome back!'
+    const userEmail = Cookies.get('userEmail')
+    if(userEmail) setUser((prev) => ({...prev, email:userEmail}))
+}, [])
 
 
 

@@ -1,6 +1,10 @@
 
-const index  = ({user, followData}) => {
+import { useEffect } from "react";
 
+const index  = ({user, followData}) => {
+   useEffect(() => {
+    document.title = `Welcome, ${user.name.split("")[0]}`
+   }, [])
   console.log(user, followData);
   return <div>Home Page</div>
 }

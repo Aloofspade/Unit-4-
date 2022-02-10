@@ -1,5 +1,7 @@
 import HeadTags from "./HeadTags"
 import Navbar from "./Navbar"
+import Search from "./SearchComponents"
+import SideMenu from "./SideMenu"
 import {createRef} from "react"
 import { Container , Grid, Ref, Segment, Sticky, Visibility} from "semantic-ui-react"
 
@@ -23,13 +25,12 @@ const layout = ({children, user }) => {
   return (
   <>
   <HeadTags />
-  {user ? 
-  ( 
+  {user ? ( 
   <>
   <div style={{ marginLeft: "1rem", marginRight: "1rem"}}>
     <Ref innerRef={contextRef}>
      <Grid>
-       <Grid.Column floated="left" width={2}>
+       <Grid.Column floated="left" width={3}>
          <Sticky context={contextRef}>
            <SideMenu user={user}/>
          </Sticky>
@@ -41,7 +42,7 @@ const layout = ({children, user }) => {
         </Visibility>
        </Grid.Column>
 
-       <Grid.Column floated="right" width={3}>
+       <Grid.Column floated="left" width={3}>
         <Sticky context={contextRef}>
           <Segment basic>
             <Search />
@@ -60,7 +61,8 @@ const layout = ({children, user }) => {
     <Navbar />
   <Container text>{children}</Container>
   </>
-  )}
+  )
+  }
 
  
   

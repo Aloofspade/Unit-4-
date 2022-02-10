@@ -4,7 +4,7 @@ const auth = (req, res, next) => {
     try {
         if(
             !req.headers.authorization ||
-            !req.headers.authorization.split(' ')[0] === "Bearer"
+            req.headers.authorization.split(' ')[0] !== "Bearer"
             
             ){
                 res.status(401).send('Unauthorized')

@@ -2,7 +2,7 @@ import React from 'react';
 import {List, Icon, Divider} from 'semantic-ui-react'
 import Link from 'next/link'
 import {useRouter, userRouter} from "next/router"
-import {logoutUser} from '../../utils/authUser'
+import { logoutUser } from '../../util/authUser';
 
 
 
@@ -18,13 +18,13 @@ const SideMenu = ({
    size="big"
    verticalAlign='middle'
    selection
-   color="teal"
+   color="blue"
 
    >
        <Link href='/'>
 
            <List.Item active={isActive('/')}>
-               <Icon name="home" size='large' color={isActive('/') && 'teal'} />
+               <Icon name="home" size='large' color={isActive('/') && 'teal' || undefined}  />
                <List.Content>
                    <List.Header content="Home"/>
                </List.Content>
@@ -40,7 +40,7 @@ const SideMenu = ({
                <Icon 
                name={unreadMessage ? "hand point right" : "mail outline"} 
                size='large' 
-               color={(isActive('/messages') && 'teal') || (unreadMessage &&  'orange') } 
+               color={(isActive('/messages') && 'teal' || undefined) || (unreadMessage &&  'orange') } 
                />
                <List.Content>
                    <List.Header content="Messages"/>
@@ -55,9 +55,9 @@ const SideMenu = ({
 
            <List.Item active={isActive('/notifications')}>
                <Icon 
-               name={unreadMessage ? "hand point right" : "bell outline"} 
+               name={unreadNotification ? "hand point right" : "bell outline"} 
                size='large' 
-               color={(isActive('/notifications') && 'teal') || (unreadMessage &&  'orange') } 
+               color={(isActive('/notifications') && 'teal' || undefined) || (unreadNotification &&  'orange') } 
                />
                <List.Content>
                    <List.Header content="Notifications"/>
@@ -72,7 +72,7 @@ const SideMenu = ({
     <Icon 
     name="user"
     size='large' 
-    color={router.query.username === username && 'teal' } 
+    color={router.query.username === username && 'teal' || undefined } 
     />
     <List.Content>
         <List.Header content="Account"/>

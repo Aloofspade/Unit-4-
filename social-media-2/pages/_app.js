@@ -7,12 +7,13 @@ import { baseURL } from './util/baseURL'
 import axios from 'axios'
 
 
+
 const App = ({ Component, pageProps }) => {
   // function MyApp(appContext) {
   //   console.log(appContext);
   //   const {Component, pageProps} = appContext;
   return (
-    <Layout>
+    <Layout user={pageProps.user}>
       <Component {...pageProps} />
     </Layout>
   )
