@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken")
 
+
 const auth = (req, res, next) => {
     try {
         if(
@@ -10,7 +11,7 @@ const auth = (req, res, next) => {
                 res.status(401).send('Unauthorized')
             }
 
-            const token = req.headers.authorization.split(' ')[1]
+            const token = req.headers.authorization.split(" ")[1]
 
             const {userId} = jwt.verify(token, process.env.JWT_SERCET)
 

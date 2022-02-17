@@ -4,6 +4,8 @@ const express = require("express");
 const {connectDB} = require("./server/util/connect")
 const cloudinary = require('cloudinary').v2
 const fileUpload = require('express-fileupload')
+const {auth} = require('./server/middleware/auth')
+
 
 
 require("dotenv").config()
@@ -31,16 +33,20 @@ const handler = nextApp.getRequestHandler();
 app.use(express.json())
 app.use(fileUpload({useTempFiles : true}))
 
+
+
 //* Routes 
 const userRoutes = require('./server/routes/userRoutes')
 const authRoutes = require('./server/routes/authRoute')
 const uploadRoutes = require('./server/routes/uploadPicRoutes')
 const searchRoutes = require('./server/routes/searchRoutes')
+const postsRoutes = require('./server/routes/postsRoutes')
 
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/uploads', uploadRoutes)
 app.use('/api/v1/search', searchRoutes)
+app.use("/api/v1/posts", auth, postsRoutes)
 // app.use('/api/v1/search', require('./server/routes/searchRoutes'))
 
 

@@ -1,9 +1,4 @@
-import '../styles/globals.css'
-import Layout from './components/layout/Layout'
-import "semantic-ui-css/semantic.min.css"
-import { redirectUser } from './util/authUser'
-import { parseCookies, destroyCookie } from 'nookies'
-import { baseURL } from './util/baseURL'
+
 import axios from 'axios'
 
 

@@ -104,7 +104,7 @@ const handleUsernameAvail = async () => {
         if(media !== null) {
             const formData = new FormData();
             formData.append("image", media, {
-                Headers:{
+                headers:{
                     "Content-Type": "multipart/form-data"
                 }
             })
