@@ -22,7 +22,7 @@ export const noProfilePosts = () => {
 export const NoFollowData = ({
     profileName,
     followersComponent = true,
-    followingcComponent = true,
+    followingComponent = true,
 }) => {
     return  <>
     {followersComponent && (
@@ -33,7 +33,7 @@ export const NoFollowData = ({
         />
     )}
 
-    {followingcComponent && (
+    {followingComponent && (
         <Message 
         icon="user outline"
         info

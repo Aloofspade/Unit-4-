@@ -177,8 +177,8 @@ const unlikePost = async (req, res) => {
 
         if(!post) return res.status(403).send("No Post Found ")
 
-        const likeIndex = post.like.findIndex((like)  => {
-             like.user.toString() === userId 
+        const likeIndex = post.likes.findIndex((like)  => {
+            return  like.user.toString() === userId 
             }
         );
         
@@ -238,7 +238,7 @@ const createComment = async (req, res) => {
             text,
             user: req.userId,
         };
-        await post.comment.unshift(newComment)
+        await post.comments.unshift(newComment)
         await post.save()
 
         return res.status(200).json(newComment._id)

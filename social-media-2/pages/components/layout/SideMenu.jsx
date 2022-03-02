@@ -1,7 +1,7 @@
 import React from 'react';
 import {List, Icon, Divider} from 'semantic-ui-react'
 import Link from 'next/link'
-import {useRouter, userRouter} from "next/router"
+import {useRouter} from "next/router"
 import { logoutUser } from '../../util/authUser';
 
 
@@ -14,7 +14,7 @@ const SideMenu = ({
 
   return ( <> 
    <List 
-   style = {{paddingTop: "1rem"}}
+   style = {{paddingTop: "2rem"}}
    size="big"
    verticalAlign='middle'
    selection
@@ -38,7 +38,7 @@ const SideMenu = ({
 
            <List.Item active={isActive('/')}>
                <Icon 
-               name={unreadMessage ? "hand point right" : "mail outline"} 
+               name={unreadMessage ? "hand point right" : "mail outline" } 
                size='large' 
                color={(isActive('/messages') && 'teal' || undefined) || (unreadMessage &&  'orange') } 
                />
@@ -51,13 +51,15 @@ const SideMenu = ({
        <Divider hidden/>
 
 
-       <Link href='/messages'>
+       <Link href='/notifications'>
 
            <List.Item active={isActive('/notifications')}>
                <Icon 
                name={unreadNotification ? "hand point right" : "bell outline"} 
                size='large' 
-               color={(isActive('/notifications') && 'teal' || undefined) || (unreadNotification &&  'orange') } 
+               color={(isActive("/notifications") && "teal") ||
+               (unreadNotification && "orange") ||
+               undefined } 
                />
                <List.Content>
                    <List.Header content="Notifications"/>

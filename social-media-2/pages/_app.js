@@ -1,62 +1,55 @@
-import '../styles/globals.css'
-import Layout from './components/layout/Layout'
-import "semantic-ui-css/semantic.min.css"
-import { redirectUser } from './util/authUser'
-import { parseCookies, destroyCookie } from 'nookies'
-import { baseURL } from './util/baseURL'
-import axios from 'axios'
+import Layout from "./components/layout/Layout";
+import "../styles/globals.css";
+import "semantic-ui-css/semantic.min.css";
+import { redirectUser } from "./util/authUser";
+import { parseCookies, destroyCookie } from "nookies";
+import { baseURL } from "./util/baseURL";
+import axios from "axios";
 
-
-
-const App = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }) => {
   // function MyApp(appContext) {
   //   console.log(appContext);
-  //   const {Component, pageProps} = appContext;
+  //   const { Component, pageProps } = appContext;
   return (
     <Layout user={pageProps.user}>
       <Component {...pageProps} />
     </Layout>
-  )
-}
+  );
+};
 
+MyApp.getInitialProps = async ({ ctx, Component }) => {
+  const { token } = parseCookies(ctx);
+  let pageProps = {};
 
- App.getInitialProps = async ({ctx, Component}) => {
-  const {token} = parseCookies(ctx)
-  let pageProps = {}
-
-  if(Component.getInitialProps) {
+  if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
 
-  const protectedRoutes = ['/']
-  const isProtectedRoute = protectedRoutes.includes(ctx.pathname)
+  const protectedRoutes = ["/", "/[username]"];
+  const isProtectedRoute = protectedRoutes.includes(ctx.pathname);
 
-  if(!token){
+  if (!token) {
     isProtectedRoute && redirectUser(ctx, "/login");
   } else {
-      try {
-          const res = await axios.get(`${baseURL}/api/v1/auth`, {
-              headers:{
-                  Authorization: `Bearer ${token}`
-              }
-          })
+    try {
+      const res = await axios.get(`${baseURL}/api/v1/auth`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-          const {user, followData} = res.data 
+      const { user, followData } = res.data;
 
-          if(user)  !isProtectedRoute &&  redirectUser(ctx, "/")
+      if (user) !isProtectedRoute && redirectUser(ctx, "/");
 
-          pageProps.user = user ;
-          pageProps.followData = followData;
-          
-      } catch (error) {
-          destroyCookie(ctx, 'token');
-          redirectUser(ctx, "/login")
-      }
+      pageProps.user = user;
+      pageProps.followData = followData;
+    } catch (error) {
+      destroyCookie(ctx, "token");
+      redirectUser(ctx, "/login");
+    }
   }
+  return { pageProps };
+};
 
-  return {pageProps};
-
- }
-
-
- export default  App;
+export default MyApp;

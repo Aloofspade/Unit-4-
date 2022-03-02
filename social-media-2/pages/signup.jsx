@@ -149,6 +149,7 @@ const handleUsernameAvail = async () => {
         <Segment>
             <ImageDropDiv 
             handleChange={handleChange} inputRef={inputRef}
+            highlighted={hightlighted}
             setHightlighed={sethHightlighted} mediaPreview={mediaPreview}
             setMediaPreview={setMediaPreview}
             setMedia={setMedia} media={media}
