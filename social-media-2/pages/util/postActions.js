@@ -9,11 +9,11 @@ const postAxios = axios.create({
 });
 
 
-export const deletePost = async  (postId, setPosts, setShowToaster) => {
+export const deletePost = async  (postId, setPosts, setShowToastr) => {
     try {
         await postAxios.delete(`/${postId}`);
         setPosts((prev) => prev.filter((post) => post._id !== postId));
-        setShowToaster(true);
+        setShowToastr(true);
     } catch (error) {
         console.log(catchErrors(error));
     }

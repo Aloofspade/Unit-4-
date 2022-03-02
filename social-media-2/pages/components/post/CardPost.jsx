@@ -19,7 +19,7 @@ import NoImageModal from "./NoImageModal";
 import { deletePost, likePost } from "../../../pages/util/postActions";
 import calculateTime from "../../util/calculateTime";
 
-const CardPost = ({ post, user, setPosts, setShowToaster }) => {
+const CardPost = ({ post, user, setPosts, setShowToastr }) => {
   const [likes, setLikes] = useState(post.likes);
   const [comments, setComments] = useState(post.comments);
   const [error, setError] = useState(null);
@@ -73,9 +73,9 @@ const CardPost = ({ post, user, setPosts, setShowToaster }) => {
           <Card.Content>
             <Image
               floated="left"
+              src={post.user.profilePicURL}
               avatar
               circular
-              src={post.user.profilePicURL}
             />
 
             {(user.role === "root" || post.user._id === user._id) && (
@@ -99,7 +99,7 @@ const CardPost = ({ post, user, setPosts, setShowToaster }) => {
                     icon="trash"
                     content="Delete"
                     onClick={() =>
-                      deletePost(post._id, setPosts, setShowToaster)
+                      deletePost(post._id, setPosts, setShowToastr)
                     }
                   />
                 </Popup>
@@ -132,7 +132,7 @@ const CardPost = ({ post, user, setPosts, setShowToaster }) => {
 
           <Card.Content extra>
             <Icon 
-            name = {isLiked ? "heart": "heart outline"}
+            name = {isLiked ? "heart" : "heart outline"}
             color={isLiked ? "red" : undefined}
             style={{cursor:"pointer"}}
             onClick={() => likePost(post._id, user._id, setLikes, !isLiked)}
@@ -140,7 +140,7 @@ const CardPost = ({ post, user, setPosts, setShowToaster }) => {
 
             <LikesList 
             
-            postId = {post._id}
+            postId={post._id}
             trigger={
               likes && (
                 <span className="spanLikesList">
@@ -157,7 +157,7 @@ const CardPost = ({ post, user, setPosts, setShowToaster }) => {
             />
 
             {comments && comments.map((comment, i) => 
-            i > 3 &&(
+            i > 3 && (
               <PostComments 
               key={comment._id}
               comment={comment}

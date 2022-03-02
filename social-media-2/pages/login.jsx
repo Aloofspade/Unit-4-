@@ -58,7 +58,7 @@ useEffect(() => {
 useEffect(() => {
     document.title = 'Welcome back!'
     const userEmail = Cookies.get('userEmail')
-    if(userEmail) setUser((prev) => ({...prev, email:userEmail}))
+    if(userEmail) setUser((prev) => ({...prev, email: userEmail}))
 }, [])
 
 
@@ -94,6 +94,7 @@ useEffect(() => {
             name="email"
             icon="envelope"
             iconPosition="left"
+            type="email"
 
          
          />

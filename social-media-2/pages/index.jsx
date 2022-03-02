@@ -1,21 +1,20 @@
+import axios from "axios";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { baseURL } from "./util/baseURL";
 import { NoPosts } from "./components/layout/NoData";
 import { Segment } from "semantic-ui-react";
-import CardPost from "./components/post/CardPost";
 import CreatePost from "./components/post/CreatePost";
-import axios from "axios";
-// import {PostDeleteToaster} from "./components/layout/Toaster"
+import CardPost from "./components/post/CardPost";
+// import { PostDeleteToastr } from "./components/layout/Toastr";
+
 const index = ({ user, followData, errorLoading, postData }) => {
   const [posts, setPosts] = useState(postData);
-  const [showToaster, setShowToaster] = useState(false);
+  const [showToastr, setShowToastr] = useState(false);
 
   useEffect(() => {
     document.title = `Welcome, ${user.name.split(" ")[0]}`;
   }, []);
-
-  if (posts.length === 0 || errorLoading) return <NoPosts />;
 
   return (
     <>
@@ -31,7 +30,7 @@ const index = ({ user, followData, errorLoading, postData }) => {
               post={post}
               user={user}
               setPosts={setPosts}
-              setShowToaster={setShowToaster}
+              setShowToastr={setShowToastr}
             />
           ))
         )}
@@ -39,7 +38,6 @@ const index = ({ user, followData, errorLoading, postData }) => {
     </>
   );
 };
-
 
 index.getInitialProps = async (ctx) => {
   try {
@@ -49,7 +47,7 @@ index.getInitialProps = async (ctx) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log(res.data);
+
     return { postData: res.data };
   } catch (error) {
     console.log(error);
@@ -60,29 +58,29 @@ index.getInitialProps = async (ctx) => {
 export default index;
 
 //posts are pageProps
-// const index = ({posts}) => {
-
-//   return  <div>
-//     {/* {posts && posts.map((post) => {
-//       return (
+// const index = ({ posts, ctx }) => {
+//   return (
+//     <div>
+// {/* {posts &&
+//   posts.map((post) => {
+//     return (
 //       <div key={post.id}>
 //         <h1>{post.title}</h1>
 //         <p>{post.body}</p>
 //         <Divider />
 //       </div>
-//       )
-//     })} */}
-//   </div>
-
-// }
+//     );
+//   })} */}
+//     </div>
+//   );
+// };
 
 // index.getInitialProps = async (ctx) => {
-//   const pageProps = await checkToken(ctx);
-//   // try {
-//   //   const res = await axios.get("https://jsonplaceholder.typicode.com/posts")
-//   //   return {posts: res.data};
-//   // } catch (error) {
-//   //   return {errorProp: true}
-
-//   // }
+// const pageProps = await checkToken(ctx);
+// try {
+//   const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
+//   return { posts: res.data };
+// } catch (error) {
+//   return { errorProp: true };
 // }
+// };
