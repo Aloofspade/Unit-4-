@@ -72,7 +72,7 @@ const CreatePost = ({ user, setPosts }) => {
         header="Oops"
       />
       <Form.Group>
-        <Image src={user.profilePicURL} avatar inline />
+        {/* <Image src={user.profilePicURL} avatar inline /> */}
         <Form.TextArea
           placeholder="what's happening?"
           name="text"
@@ -141,6 +141,7 @@ const CreatePost = ({ user, setPosts }) => {
         color="teal"
         icon="send"
         content={<strong>Post</strong>}
+        z
       />
     </Form>
   );

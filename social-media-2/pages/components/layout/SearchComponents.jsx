@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {List, Image, Search, Item} from 'semantic-ui-react'
+import { List, Image, Search, Item } from "semantic-ui-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Router from "next/router";
@@ -8,84 +8,79 @@ let cancel;
 
 const SearchComponents = () => {
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false)
-  const [results, setResults] = useState([])
-  
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
 
   //*headers//
 
- const handleChange = async (e) => {
-    const {value} = e.target;
-  if(value === " ") return;
-    setText(value.trim())
+  const handleChange = async (e) => {
+    const { value } = e.target;
+    if (value === " ") return;
+    setText(value.trim());
     if (value) {
-      setLoading(true)
+      setLoading(true);
       try {
         cancel && cancel();
-        const token = Cookies.get('token')
+        const token = Cookies.get("token");
         const res = await axios.get(`${baseURL}/api/v1/search/${value}`, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
           cancelToken: new axios.CancelToken((canceler) => {
-            cancel = canceler
+            cancel = canceler;
           }),
-      })
-      if(res.data.length === 0){
-        setResults([]);
-        return setLoading(false)
-      }
+        });
+        if (res.data.length === 0) {
+          setResults([]);
+          return setLoading(false);
+        }
 
-    setResults(res.data)
+        setResults(res.data);
       } catch (error) {
         console.log("Error Searching", error);
       }
-      } else {
-        setResults([]);
-      }
-      setLoading(false)
+    } else {
+      setResults([]);
     }
-    return <Search
+    setLoading(false);
+  };
+  return (
+    <Search
       onBlur={() => {
-        results.length > 0 && setResults([]) 
-        loading && setLoading(false) 
-        setText("")
-
+        results.length > 0 && setResults([]);
+        loading && setLoading(false);
+        setText("");
       }}
-
       loading={loading}
       value={text}
       resultRenderer={ResultRenderer}
-      results={results||null}
+      results={results || null}
       onSearchChange={handleChange}
       placeholder="Find Other users"
       minCharacters={1}
       onResultSelect={(e, data) => Router.push(`/${data.result.username}`)}
     />
-  }
+  );
+};
 
-  const ResultRenderer = ({_id, profilePicURL, name}) => {
-    return (
+const ResultRenderer = ({ _id, profilePicURL, name }) => {
+  return (
     <List key={_id}>
       <List.Item>
         <Image
-        style={{
-          objectFit: "contain",
-          height: "1.5rem",
-          width: "1.5rem",
-        }}
-         src={profilePicURL}
-        alt=" ProfilePic"
-        avatar
+          style={{
+            objectFit: "contain",
+            height: "1.5rem",
+            width: "1.5rem",
+          }}
+          src={profilePicURL}
+          alt=" ProfilePic"
+          avatar
         />
-        <Item.Content header={name} as="a"/>
+        <Item.Content header={name} as="a" />
       </List.Item>
     </List>
-    )
-  }
-  
-
-
-
+  );
+};
 
 export default SearchComponents;

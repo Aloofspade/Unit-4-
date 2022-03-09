@@ -1,0 +1,64 @@
+import React from "react";
+import { Divider, Comment, Icon, List } from "semantic-ui-react";
+import { useRouter } from "next/router";
+import calculateTime from "../../util/calculateTime";
+
+const Chat = ({ chat, connectedUsers, deleteChat }) => {
+  const router = useRouter();
+
+  const isOnline = connectedUsers.find(
+    (user) => user.userId === Chat.messageWith
+  );
+  return (
+    <>
+      <List selection>
+        <List.Item
+          active={router.query.message == chat.messageWith}
+          onClick={() =>
+            router.push(`/message?message${chat.messageWith}`, undefined, {
+              shallow: true,
+            })
+          }
+        >
+          <Comment>
+            <Comment.Avatar src={chat.profilePicURL} />
+            <Comment.Content>
+              <Comment.Author as="a">
+                {chat.name}("")
+                {isOnline ? (
+                  <Icon name="cirlce" color="green" size="small" />
+                ) : (
+                  <Icon name="circle outline" size="small" />
+                )}
+              </Comment.Author>
+              <Comment.Metadata>
+                <div>{calculateTime(chat.data)}</div>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Icon
+                    name="trash"
+                    color="red"
+                    onClick={() => deleteChat(chat.messageWith)}
+                  />
+                </div>
+              </Comment.Metadata>
+              <Comment.Text>
+                {chat.lastMessage.length > 20
+                  ? `${chat.lastMessage.substring(0, 20)}...`
+                  : chat.lastMessage}
+              </Comment.Text>
+            </Comment.Content>
+          </Comment>
+        </List.Item>
+      </List>
+      <Divider />
+    </>
+  );
+};
+
+export default Chat;

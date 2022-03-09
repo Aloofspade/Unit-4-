@@ -16,7 +16,7 @@ import Link from "next/link";
 import LikesList from "./LikesList";
 import ImageModal from "./ImageModal";
 import NoImageModal from "./NoImageModal";
-import { deletePost, likePost } from "../../../pages/util/postActions";
+import { deletePost, likePost } from "../../util/postActions";
 import calculateTime from "../../util/calculateTime";
 
 const CardPost = ({ post, user, setPosts, setShowToastr }) => {
@@ -25,19 +25,18 @@ const CardPost = ({ post, user, setPosts, setShowToastr }) => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const isLiked = likes.filter((like) => like.user === user._id).length > 0 ;
+  const isLiked = likes.filter((like) => like.user === user._id).length > 0;
 
   const addPropsToModal = () => ({
     post,
     user,
-    setLikes,
     likes,
+    setLikes,
     isLiked,
     comments,
     setComments,
   });
 
-  // console.log(post);
   return (
     <>
       {showModal && (
@@ -92,8 +91,9 @@ const CardPost = ({ post, user, setPosts, setShowToastr }) => {
                     />
                   }
                 >
-                  <Header as="h4" content="Are you Sure?" />
-                  <p>This Action is irreversible</p>
+                  <Header as="h4" content="Are you sure?" />
+                  <p>This action is irreversable!</p>
+
                   <Button
                     color="red"
                     icon="trash"
@@ -108,81 +108,77 @@ const CardPost = ({ post, user, setPosts, setShowToastr }) => {
 
             <Card.Header>
               <Link href={`/${post.user.username}`}>
-              <a>{post.user.name}</a>
+                <a>{post.user.name}</a>
               </Link>
             </Card.Header>
 
+            <Card.Meta>{calculateTime(post.createdAt)}</Card.Meta>
 
-            <Card.Meta>
-              {calculateTime(post.createAt)}
-            </Card.Meta>
+            {post.location && <Card.Meta content={post.location} />}
 
-            {post.location && <Card.Meta content={post.location}/>}
-
-            <Card.Description 
-            style={{
-              fontSize: "17px",
-              letterSpacing: "0.1px",
-              wordSpacing: "0.35px"
-            }}>
+            <Card.Description
+              style={{
+                fontSize: "17px",
+                letterSpacing: "0.1px",
+                wordSpacing: "0.35px",
+              }}
+            >
               {post.text}
-
             </Card.Description>
           </Card.Content>
 
           <Card.Content extra>
-            <Icon 
-            name = {isLiked ? "heart" : "heart outline"}
-            color={isLiked ? "red" : undefined}
-            style={{cursor:"pointer"}}
-            onClick={() => likePost(post._id, user._id, setLikes, !isLiked)}
+            <Icon
+              name={isLiked ? "heart" : "heart outline"}
+              color={isLiked ? "red" : undefined}
+              style={{ cursor: "pointer" }}
+              onClick={() => likePost(post._id, user._id, setLikes, !isLiked)}
             />
 
-            <LikesList 
-            
-            postId={post._id}
-            trigger={
-              likes && (
-                <span className="spanLikesList">
-                  {`${likes.length} ${likes.length === 1 ? "like" : "likes"}`}
-                </span>
-              )
-            }
-            />
-
-            <Icon 
-            name="comment outline"
-            style={{marginLeft: "7px"}}
-            color="blue"
-            />
-
-            {comments && comments.map((comment, i) => 
-            i > 3 && (
-              <PostComments 
-              key={comment._id}
-              comment={comment}
+            <LikesList
               postId={post._id}
-              user= {user}
-              setComments={setComments}
-              />
-            )
-            )}
+              trigger={
+                likes && (
+                  <span className="spanLikesList">
+                    {`${likes.length} ${likes.length === 1 ? "like" : "likes"}`}
+                  </span>
+                )
+              }
+            />
 
+            <Icon
+              name="comment outline"
+              style={{ marginLeft: "7px" }}
+              color="blue"
+            />
+
+            {comments &&
+              comments.map(
+                (comment, i) =>
+                  i < 3 && (
+                    <PostComments
+                      key={comment._id}
+                      comment={comment}
+                      postId={post._id}
+                      user={user}
+                      setComments={setComments}
+                    />
+                  )
+              )}
             {comments.length > 3 && (
-              <Button 
-              content="View More"
-              color="teal"
-              basic
-              circular
-              onClick={() => setShowModal(true)}
+              <Button
+                content="View More"
+                color="teal"
+                basic
+                circular
+                onClick={() => setShowModal(true)}
               />
-            )} 
-
+            )}
             <Divider hidden />
-            <CommentInputField 
-            user={user}
-            postId={post._id}
-            setComments={setComments}
+            <CommentInputField
+              user={user}
+              postId={post._id}
+              setComments={setComments}
             />
           </Card.Content>
         </Card>
