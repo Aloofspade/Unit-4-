@@ -54,7 +54,7 @@ const ProfileHeader = ({
                     )}
                     {profile.social.instagram && (
                       <List.Item>
-                        <List.Icon name="instagram" color="instagram" />
+                        <List.Icon name="instagram" color="purple" />
                         <List.Content content={profile.social.instagram} />
                       </List.Item>
                     )}
@@ -66,7 +66,7 @@ const ProfileHeader = ({
                     )}
                     {profile.social.twitter && (
                       <List.Item>
-                        <List.Icon name="twitter" color="twitter" />
+                        <List.Icon name="twitter" color="blue" />
                         <List.Content content={profile.social.twitter} />
                       </List.Item>
                     )}

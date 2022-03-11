@@ -6,7 +6,7 @@ const MessagesInputField = ({SendMsg}) => {
     const [loading, setLoading] = useState(false)
 
   return (
-      <div style={{position: "sticky", bottom="0"}}>
+      <div style={{position: "sticky", bottom:"0"}}>
           <Segment  secondary color="teal" attached="bottom">
     <Form reply onSubmit={(e) => {
         e.preventDefault()

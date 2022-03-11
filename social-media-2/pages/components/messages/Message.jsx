@@ -10,23 +10,24 @@ const Message = ({ message, user, deleteMsg, bannerProfilePic, divRef }) => {
     <div className="bubbleWrapper" ref={divRef}>
       <div
         className={ifSender ? "inlineContainer own" : "inlineContainer"}
-        onClick={() => ifSender && setShowDeleteIcon(!deleteIcon)}
+        onClick={() => ifSender && setShowDeleteIcon(!showDeleteIcon)}
       >
         <img
+          style={{objectFit: 'contain', height:'30px', width:"30px"}}
           className="inlineIcon"
           src={ifSender ? user.profilePicURL : bannerProfilePic}
         />
         <div className={ifSender ? "ownBubble own" : "otherBubble Other"}>
           {message.msg}
 
-          {deleteIcon && (
+          {showDeleteIcon && (
             <Popup
               triggerRef={
                 <Icon
                   name="trash"
                   color="red"
                   style={{ cursor: "pointer" }}
-                //   onClick={() => deleteMsg(message._id)}
+                  onClick={() => deleteMsg(message._id)}
                 />
               }
               content="This will only delete this message from your inbox, not theirs"

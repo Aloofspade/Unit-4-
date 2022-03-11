@@ -11,6 +11,7 @@ import ProfileMenuTabs from "./components/profile/ProfileMenuTabs";
 import { NoProfilePosts } from "./components/layout/NoData";
 import { PlaceholderPosts } from "./components/layout/PlaceHolderGroup";
 import Followers from "./components/profile/Followers";
+import Following from "./components/profile/Following";
 
 const ProfilePage = ({
   errorLoading,
@@ -49,6 +50,8 @@ const ProfilePage = ({
 
     getPosts();
   }, [router.query.username]);
+
+  if(!profile) return null;
 
   return (
     <>
