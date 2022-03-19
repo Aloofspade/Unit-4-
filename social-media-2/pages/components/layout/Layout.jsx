@@ -1,28 +1,28 @@
 import HeadTags from "./HeadTags";
 import Navbar from "./Navbar";
-import Search from "./SearchComponents";
 import SideMenu from "./SideMenu";
+import Search from "./SearchComponent";
 import { createRef } from "react";
 import {
   Container,
-  Grid,
   Ref,
-  Segment,
+  Grid,
   Sticky,
+  Segment,
   Visibility,
 } from "semantic-ui-react";
 
-//! this is for the nprogress bar
+//! V this is for the nprogress bar
 import nprogress from "nprogress";
 import Router from "next/router";
 
-const layout = ({ children, user }) => {
+const Layout = ({ children, user }) => {
   Router.onRouteChangeStart = () => nprogress.start();
   Router.onRouteChangeComplete = () => nprogress.done();
   Router.onRouteChangeError = () => nprogress.done();
 
   //createRef will update the reference on re-render
-  //useref will only update on refresh
+  //useRef will only update on refresh
   const contextRef = createRef();
 
   return (
@@ -30,7 +30,12 @@ const layout = ({ children, user }) => {
       <HeadTags />
       {user ? (
         <>
-          <div style={{ marginLeft: "1rem", marginRight: "1rem" }}>
+          <div
+            style={{
+              marginLeft: "1rem",
+              marginRight: "1rem",
+            }}
+          >
             <Ref innerRef={contextRef}>
               <Grid>
                 <Grid.Column floated="left" width={3}>
@@ -38,12 +43,10 @@ const layout = ({ children, user }) => {
                     <SideMenu user={user} />
                   </Sticky>
                 </Grid.Column>
-
-                <Grid.Column width={10}>
+                <Grid.Column width={9}>
                   <Visibility context={contextRef}>{children}</Visibility>
                 </Grid.Column>
-
-                <Grid.Column floated="left" width={3}>
+                <Grid.Column floated="left" width={4}>
                   <Sticky context={contextRef}>
                     <Segment basic>
                       <Search />
@@ -64,4 +67,4 @@ const layout = ({ children, user }) => {
   );
 };
 
-export default layout;
+export default Layout;

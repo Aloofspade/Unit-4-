@@ -6,17 +6,17 @@ import Router from "next/router";
 import { baseURL } from "../../util/baseURL";
 let cancel;
 
-const SearchComponents = () => {
+const SearchComponent = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
 
-  //*headers//
+  //*handlers */
 
   const handleChange = async (e) => {
     const { value } = e.target;
     if (value === " ") return;
-    setText(value.trim());
+    setText(value);
     if (value) {
       setLoading(true);
       try {
@@ -30,11 +30,11 @@ const SearchComponents = () => {
             cancel = canceler;
           }),
         });
+
         if (res.data.length === 0) {
           setResults([]);
           return setLoading(false);
         }
-
         setResults(res.data);
       } catch (error) {
         console.log("Error Searching", error);
@@ -44,6 +44,7 @@ const SearchComponents = () => {
     }
     setLoading(false);
   };
+
   return (
     <Search
       onBlur={() => {
@@ -56,7 +57,7 @@ const SearchComponents = () => {
       resultRenderer={ResultRenderer}
       results={results || null}
       onSearchChange={handleChange}
-      placeholder="Find Other users"
+      placeholder="Find other users"
       minCharacters={1}
       onResultSelect={(e, data) => Router.push(`/${data.result.username}`)}
     />
@@ -74,7 +75,7 @@ const ResultRenderer = ({ _id, profilePicURL, name }) => {
             width: "1.5rem",
           }}
           src={profilePicURL}
-          alt=" ProfilePic"
+          alt="ProfilePic"
           avatar
         />
         <Item.Content header={name} as="a" />
@@ -83,4 +84,4 @@ const ResultRenderer = ({ _id, profilePicURL, name }) => {
   );
 };
 
-export default SearchComponents;
+export default SearchComponent;

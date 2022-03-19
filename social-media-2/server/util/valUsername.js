@@ -1,4 +1,3 @@
- const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/igm
+const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/gim;
 
-
- module.exports = regexUserName;
+module.exports = regexUserName;

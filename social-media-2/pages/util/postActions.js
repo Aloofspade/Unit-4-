@@ -1,7 +1,7 @@
 import axios from "axios"
 import { baseURL } from "./baseURL"
 import Cookies from "js-cookie"
-import catchErrors from './catchError'
+import catchErrors from './catchErrors'
 
 const postAxios = axios.create({
     baseURL:`${baseURL}/api/v1/posts`, 

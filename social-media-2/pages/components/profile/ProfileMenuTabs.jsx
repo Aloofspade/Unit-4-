@@ -3,7 +3,7 @@ import { Menu } from "semantic-ui-react";
 
 const ProfileMenuTabs = ({
   activeItem,
-  handleItemClicked,
+  handleItemClick,
   followersLength,
   followingLength,
   ownAccount,
@@ -15,29 +15,29 @@ const ProfileMenuTabs = ({
         <Menu.Item
           name="profile"
           active={activeItem === "profile"}
-          onClick={() => handleItemClicked("profile")}
+          onClick={() => handleItemClick("profile")}
         />
         <Menu.Item
           name={`${followersLength} followers`}
           active={activeItem === "followers"}
-          onClick={() => handleItemClicked("followers")}
+          onClick={() => handleItemClick("followers")}
         />
         <Menu.Item
           name={`${followingLength} following`}
           active={activeItem === "following"}
-          onClick={() => handleItemClicked("following")}
+          onClick={() => handleItemClick("following")}
         />
         {ownAccount && (
           <>
             <Menu.Item
               name="Update Profile"
               active={activeItem === "updateProfile"}
-              onClick={() => handleItemClicked("updateProfile")}
+              onClick={() => handleItemClick("updateProfile")}
             />
             <Menu.Item
               name="Update Settings"
               active={activeItem === "updateSettings"}
-              onClick={() => handleItemClicked("updateSettings")}
+              onClick={() => handleItemClick("updateSettings")}
             />
           </>
         )}

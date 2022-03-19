@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { baseURL } from './baseURL'
-import catchErrors from './catchError'
+import catchErrors from './catchErrors'
 import Cookies from 'js-cookie'
 import Router from 'next/router'
 

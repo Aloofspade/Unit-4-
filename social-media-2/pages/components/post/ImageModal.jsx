@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ImageModal = () => {
-  return (
-    <div>ImageModal</div>
-  )
-}
+  return <div>ImageModal</div>;
+};
 
-export default ImageModal
+export default ImageModal;

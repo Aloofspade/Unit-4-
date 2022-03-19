@@ -7,15 +7,16 @@ const Chat = ({ chat, connectedUsers, deleteChat }) => {
   const router = useRouter();
 
   const isOnline = connectedUsers.find(
-    (user) => user.userId === Chat.messageWith
+    (user) => user.userId === chat.messagesWith
   );
+
   return (
     <>
       <List selection>
         <List.Item
-          active={router.query.message == chat.messageWith}
+          active={router.query.message === chat.messagesWith}
           onClick={() =>
-            router.push(`/message?message${chat.messageWith}`, undefined, {
+            router.push(`/messages?message=${chat.messagesWith}`, undefined, {
               shallow: true,
             })
           }
@@ -24,13 +25,14 @@ const Chat = ({ chat, connectedUsers, deleteChat }) => {
             <Comment.Avatar src={chat.profilePicURL} />
             <Comment.Content>
               <Comment.Author as="a">
-                {chat.name}("")
+                {chat.name}{" "}
                 {isOnline ? (
-                  <Icon name="cirlce" color="green" size="small" />
+                  <Icon name="circle" color="green" size="small" />
                 ) : (
                   <Icon name="circle outline" size="small" />
                 )}
               </Comment.Author>
+
               <Comment.Metadata>
                 <div>{calculateTime(chat.data)}</div>
                 <div
@@ -43,20 +45,20 @@ const Chat = ({ chat, connectedUsers, deleteChat }) => {
                   <Icon
                     name="trash"
                     color="red"
-                    onClick={() => deleteChat(chat.messageWith)}
+                    onClick={() => deleteChat(chat.messagesWith)}
                   />
                 </div>
               </Comment.Metadata>
               <Comment.Text>
                 {chat.lastMessage.length > 20
-                  ? `${chat.lastMessage.substring(0, 20)}...`
+                  ? `${chat.lastMessage.substring(0, 20)} ...`
                   : chat.lastMessage}
               </Comment.Text>
             </Comment.Content>
           </Comment>
         </List.Item>
       </List>
-      <Divider />
+      {/* <Divider /> */}
     </>
   );
 };

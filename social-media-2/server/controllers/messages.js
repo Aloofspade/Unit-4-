@@ -19,7 +19,6 @@ const getChats = async (req, res) => {
         date: chat.messages[chat.messages.length - 1].date,
       }));
     }
-
     return res.status(200).json(chatsToBeSent);
   } catch (error) {
     console.log(error);

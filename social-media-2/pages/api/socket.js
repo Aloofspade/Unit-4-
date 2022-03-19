@@ -7,18 +7,12 @@ const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
   } else {
-    console.log("Socket is Initializing");
+    console.log("Socket is initializing");
     const io = new Server(res.socket.server);
     res.socket.server.io = io;
     console.log("Socket is running");
 
     io.on("connection", (socket) => {
-      // socket.emit("ping", {name: "Jimmy"})
-
-      // socket.on("testing", (data) => {
-      //     console.log(data);
-      // })
-
       socket.on("join", ({ userId }) => {
         const user = users.find((user) => user.userId === userId);
 
@@ -26,16 +20,16 @@ const SocketHandler = (req, res) => {
 
         // setInterval(() => {
         //   socket.emit("connectedUsers", {
-        //     users: user.filter((user) => user.userId !== userId),
+        //     users: users.filter((user) => user.userId !== userId),
         //   });
-        // }, 6000);
+        // }, 60000);
       });
 
       socket.on("sendNewMsg", async ({ userId, msgSendToUserId, msg }) => {
         try {
           //sender
           const user = await ChatModel.findOne({ user: userId });
-          //Receiver
+          //receiver
           const msgToSendUser = await ChatModel.findOne({
             user: msgSendToUserId,
           });
@@ -47,7 +41,7 @@ const SocketHandler = (req, res) => {
             date: Date.now(),
           };
 
-          const previousChat = user.chat.find(
+          const previousChat = user.chats.find(
             (chat) => chat.messagesWith.toString() === msgSendToUserId
           );
 
@@ -63,22 +57,23 @@ const SocketHandler = (req, res) => {
             await user.save();
           }
 
-          const previousChatForReceiver = msgToSendUser.chat.find(
+          const previousChatForReceiver = msgToSendUser.chats.find(
             (chat) => chat.messagesWith.toString() === userId
           );
+
           if (previousChatForReceiver) {
             previousChatForReceiver.messages.push(newMsg);
             await msgToSendUser.save();
           } else {
             const newChat = { messagesWith: userId, messages: [newMsg] };
-            msgToSendUser.chat.unshift(newChat);
+            msgToSendUser.chats.unshift(newChat);
             await msgToSendUser.save();
           }
 
-          const receiverSocket = findConnectedUser(msgSendToUserId);
+          const recieverSocket = findConnectedUser(msgSendToUserId);
 
-          if (receiverSocket)
-            io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
+          if (recieverSocket)
+            io.to(recieverSocket.socketId).emit("newMsgReceived", { newMsg });
           else {
             const user = await UserModel.findById(userId);
             if (!user.unreadMessage) {
@@ -86,7 +81,6 @@ const SocketHandler = (req, res) => {
               await user.save();
             }
           }
-
           socket.emit("msgSent", { newMsg });
         } catch (error) {
           console.log(error);
@@ -116,7 +110,7 @@ const SocketHandler = (req, res) => {
 
         if (!chat) return;
 
-        const messageToDelete = chat.message.find(
+        const messageToDelete = chat.messages.find(
           (message) => message._id.toString() === messageId
         );
 
@@ -124,19 +118,17 @@ const SocketHandler = (req, res) => {
 
         if (messageToDelete.sender.toString() !== userId) return;
 
-        const indexOf = chat.message.findIndex(
+        const indexOf = chat.messages.findIndex(
           (message) => message._id.toString() === messageToDelete._id.toString()
         );
 
-        await chat.messages.splice(indexOf, 1)
+        await chat.messages.splice(indexOf, 1);
         await user.save();
 
-
-        socket.emit('msgDeleted');
+        socket.emit("msgDeleted");
       });
     });
   }
-
   res.end();
 };
 

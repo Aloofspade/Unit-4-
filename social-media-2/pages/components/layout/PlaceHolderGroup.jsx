@@ -10,8 +10,8 @@ export const LikesPlaceHolder = () =>
     </Placeholder>
   ));
 
-export const PlaceholderPosts = () => {
-  return range(1, 3).map((item) => {
+export const PlaceHolderPosts = () => {
+  return range(1, 3).map((item) => (
     <>
       <Placeholder key={item} fluid>
         <Placeholder.Header image>
@@ -25,7 +25,7 @@ export const PlaceholderPosts = () => {
           <Placeholder.Line />
         </Placeholder.Paragraph>
       </Placeholder>
-      <Divider hidden/>
-    </>;
-  });
+      <Divider hidden />
+    </>
+  ));
 };

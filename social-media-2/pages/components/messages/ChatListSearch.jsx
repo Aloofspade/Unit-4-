@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Lise, Image, Search, List } from "semantic-ui-react";
+import { List, Image, Search } from "semantic-ui-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { baseURL } from "../../util/baseURL";
 let cancel;
 
-const ChatListSearch = ({chats, setChats}) => {
+const ChatListSearch = ({ chats, setChats }) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -47,27 +47,28 @@ const ChatListSearch = ({chats, setChats}) => {
       name: result.name,
       profilePicURL: result.profilePicURL,
       lastMessage: "",
-      date: Date.new(),
+      date: Date.now(),
     };
 
     setChats((prev) => [newChat, ...prev]);
     return router.push(`/messages?message=${result._id}`);
   };
 
-  return <Search 
-  onBlur={() => {
-      setResults([])
-      setLoading(false)
-      setText("")
-  }}
-
-  loading={loading}
-  value={text}
-  resultRenderer={ResultRenderer}
-  result={results}
-  onSearchChange={handleChange}
-  onResultSelect={(e, data) => addChat(data.result)}
-  />;
+  return (
+    <Search
+      onBlur={() => {
+        setResults([]);
+        setLoading(false);
+        setText("");
+      }}
+      loading={loading}
+      value={text}
+      resultRenderer={ResultRenderer}
+      results={results}
+      onSearchChange={handleChange}
+      onResultSelect={(e, data) => addChat(data.result)}
+    />
+  );
 };
 
 const ResultRenderer = ({ _id, profilePicURL, name }) => {
@@ -80,4 +81,5 @@ const ResultRenderer = ({ _id, profilePicURL, name }) => {
     </List>
   );
 };
+
 export default ChatListSearch;

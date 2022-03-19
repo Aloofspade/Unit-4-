@@ -1,8 +1,8 @@
 const router = require("express").Router();
 
-const { searchUsers } = require("../controllers/search");
+const { getUserAuth } = require("../controllers/auth");
 const { auth } = require("../middleware/auth");
 
-router.route("/:searchText").get(auth, searchUsers);
+router.route("/").get(auth, getUserAuth);
 
 module.exports = router;

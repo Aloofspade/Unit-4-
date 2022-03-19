@@ -1,4 +1,5 @@
- const defaultProfilePic = "https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg";
 
+const defaultProfilePic =
+"https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg";
 
- module.exports = defaultProfilePic;
+module.exports = defaultProfilePic;
